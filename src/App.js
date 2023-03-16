@@ -1,7 +1,8 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation} from 'react-router-dom';
 import { ThreadList } from './mine/ThreadList';
 import { ThreadNew } from './mine/ThreadNew';
+import { ThreadContent } from './mine/ThreadContent';
 
 function App() {
   return (
@@ -13,8 +14,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />}/>
           <Route path='/thread/new' element={<ThreadNewPage />}/>
-          <Route path='/products' element={<Products />}/>
-          <Route path='/*' element={<Products />}/>
+          <Route path='/thread/:thread_id' element={<ThreadIdPage />}/>
+          <Route path='/*' element={<NotFound />}/>
         </Routes>
       </Router>
     </div>
@@ -30,7 +31,6 @@ function Home() {
         <ThreadList />
       </div>
       <p><Link to='/thread/new'>Link to ThreadNew</Link></p>
-      <p><Link to='/others'>Link to Products</Link></p>
     </div>
   );
 }
@@ -42,8 +42,14 @@ function ThreadNewPage() {
     </div>
   );
 }
-function Products() {
-  return <h2>Products</h2>
+function ThreadIdPage() {
+  const params = useParams();
+  const {state} = useLocation();
+  return (
+    <div>
+      <ThreadContent thread_id={params.thread_id} title={state.title} />
+    </div>
+  )
 }
 function NotFound() {
   return <h2>Not Found</h2>
