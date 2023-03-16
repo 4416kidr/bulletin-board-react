@@ -10,7 +10,7 @@ export function ThreadList() {
             .then((res) => res.json())
             .then((result) => {
                 setThreadList(result);
-                console.log(result);
+                // console.log(result);
             },
             (error) => {
                 console.log('fetch error');
@@ -18,13 +18,13 @@ export function ThreadList() {
     }
     function NextClickHandler() {
         setThreadOffset(threadOffset + 10);
-        GetThreadList(threadOffset);
+        GetThreadList(threadOffset+10);
     }
     function ResetClickHandler() {
         setThreadOffset(0);
-        GetThreadList(threadOffset);
+        GetThreadList(0);
     }
-    useEffect(() => GetThreadList(threadOffset, setThreadList), [])
+    useEffect(() => GetThreadList(threadOffset), [])
     if (threadList == null) return (<div><p>loading...</p></div>)
     return (
         <div>
