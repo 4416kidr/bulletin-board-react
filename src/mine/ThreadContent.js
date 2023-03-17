@@ -5,12 +5,10 @@ export function ThreadContent(props) {
     const [contentList, setContentList] = useState(null);
     const [contentOffset, setContentOffset] = useState(0);
     function GetContentList(offset) {
-        console.log(offset);
         const url = 'https://2y6i6tqn41.execute-api.ap-northeast-1.amazonaws.com/threads/' + props.thread_id + '/posts?offset=' + offset;
         fetch(url, {method: 'GET'})
          .then(res => res.json())
          .then(result => {
-            console.log(result);
             setContentList(result.posts);
          }, 
          (error) => {
@@ -35,28 +33,33 @@ export function ThreadContent(props) {
         </ol>
         )
     }
-    useEffect(() => GetContentList(contentOffset), [])
-    if (contentList == null) return (<div><p>loading...</p></div>)
-    if (contentList.length == 0) return (
-        <div>
-            <p>this thread has no content...</p>
-            <Link to='/'>Topに戻る</Link>
-        </div>)
-    return (
-        <div>
-            <h2>{props.title}</h2>
+    function LinkToContentNew() {
+        return (<Link to={`/thread/${props.thread_id}/new`}>投稿画面に入る</Link>);
+    }
+    function MakeContent() {
+        if (contentList == null) return (<div><p>loading...</p></div>)
+        if (contentList.length == 0) return (
             <div>
-                <h4>thread information</h4>
-                <ul>
-                    <li>title: {props.title}</li>
-                    <li>id: {props.thread_id}</li>
-                </ul>
+                <button type='button' onClick={ResetClickHandler}>Reset</button>
+                <p>no content...</p>
+            </div>)
+        return (
+            <div>
                 <h4>Content</h4>
                 <p>{contentOffset}～{contentOffset+10}を表示中</p>
                 <button type='button' onClick={NextClickHandler}>Next</button>
                 <button type='button' onClick={ResetClickHandler}>Reset</button>
                 <ReloadList contents={contentList}/>
             </div>
+        )
+    }
+    useEffect(() => GetContentList(contentOffset), [])
+
+    return (
+        <div>
+            <h2>{props.thread_id}のスレッド内容</h2>
+            <MakeContent />
+            <p><LinkToContentNew /></p>
             <Link to='/'>Topに戻る</Link>
         </div>
     )

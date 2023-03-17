@@ -33,9 +33,8 @@ export function ThreadList() {
             <button type="button" onClick={ResetClickHandler}>Reset</button>
             <p>{threadOffset}～{threadOffset+10}を表示中</p>
             <ol className="thread-list">
-                {/* {threadList.map((e, index) => <li className="threads" key={index}>{e.title}</li>)} */}
                 {threadList.map((e, index) => {
-                    return (<li key={e.id}><Link to={`/thread/${String(e.id)}`} state={{title: e.title}}>{e.title}【id: {e.id}】</Link></li>);
+                    return (<li key={e.id}><Link to={`/thread/${String(e.id)}`}>{e.title}【id: {e.id}】</Link></li>);
                 })}
             </ol>
         </div>

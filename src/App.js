@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation} f
 import { ThreadList } from './mine/ThreadList';
 import { ThreadNew } from './mine/ThreadNew';
 import { ThreadContent } from './mine/ThreadContent';
+import { ThreadContentNew } from './mine/ThreadContentNew';
 
 const thread_new = '/thread/new'
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path='/' element={<Home />}/>
           <Route path={thread_new} element={<ThreadNewPage />}/>
           <Route path='/thread/:thread_id' element={<ThreadIdPage />}/>
+          <Route path='/thread/:thread_id/new' element={<ThreadIdNewPage />} />
           <Route path='/*' element={<NotFound />}/>
         </Routes>
       </Router>
@@ -45,10 +47,18 @@ function ThreadNewPage() {
 }
 function ThreadIdPage() {
   const params = useParams();
-  const {state} = useLocation();
   return (
     <div>
-      <ThreadContent thread_id={params.thread_id} title={state.title} />
+      <ThreadContent thread_id={params.thread_id} />
+    </div>
+  )
+}
+function ThreadIdNewPage() {
+  const params = useParams();
+  return (
+    <div>
+      <ThreadContentNew thread_id={params.thread_id} />
+      <Link to={`/thread/${params.thread_id}`}>スレッド内容一覧に戻る</Link>
     </div>
   )
 }
