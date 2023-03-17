@@ -4,6 +4,7 @@ import { ThreadList } from './mine/ThreadList';
 import { ThreadNew } from './mine/ThreadNew';
 import { ThreadContent } from './mine/ThreadContent';
 
+const thread_new = '/thread/new'
 function App() {
   return (
     <div className="App">
@@ -13,7 +14,7 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<Home />}/>
-          <Route path='/thread/new' element={<ThreadNewPage />}/>
+          <Route path={thread_new} element={<ThreadNewPage />}/>
           <Route path='/thread/:thread_id' element={<ThreadIdPage />}/>
           <Route path='/*' element={<NotFound />}/>
         </Routes>
@@ -30,7 +31,7 @@ function Home() {
         <p id="thread-list-title">スレッド一覧</p>
         <ThreadList />
       </div>
-      <p><Link to='/thread/new'>Link to ThreadNew</Link></p>
+      <p><Link to={thread_new}>Link to ThreadNew</Link></p>
     </div>
   );
 }

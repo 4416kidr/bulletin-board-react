@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 export function ThreadContent(props) {
     const [contentList, setContentList] = useState(null);
     const [contentOffset, setContentOffset] = useState(0);
-    function GetContentList() {
-        const url = 'https://2y6i6tqn41.execute-api.ap-northeast-1.amazonaws.com/threads/' + props.thread_id + '/posts?offset=' + contentOffset;
+    function GetContentList(offset) {
+        console.log(offset);
+        const url = 'https://2y6i6tqn41.execute-api.ap-northeast-1.amazonaws.com/threads/' + props.thread_id + '/posts?offset=' + offset;
         fetch(url, {method: 'GET'})
          .then(res => res.json())
          .then(result => {
@@ -17,19 +18,18 @@ export function ThreadContent(props) {
          })
     }
     function NextClickHandler() {
-        console.log(contentOffset);
-        setContentOffset(contentOffset+10);
-        console.log(contentOffset);
-        GetContentList(contentOffset+10);
+        const new_offset = contentOffset + 10;
+        setContentOffset(new_offset);
+        GetContentList(new_offset);
     }
     function ResetClickHandler() {
         setContentOffset(0);
         GetContentList(0);
     }
-    function ReloadList() {
+    function ReloadList(props) {
         return(
         <ol>
-            {contentList.map(e => {
+            {props.contents.map(e => {
                 return (<li key={e.id}>{e.post}</li>)
             })}
         </ol>
@@ -55,7 +55,7 @@ export function ThreadContent(props) {
                 <p>{contentOffset}～{contentOffset+10}を表示中</p>
                 <button type='button' onClick={NextClickHandler}>Next</button>
                 <button type='button' onClick={ResetClickHandler}>Reset</button>
-                <ReloadList />
+                <ReloadList contents={contentList}/>
             </div>
             <Link to='/'>Topに戻る</Link>
         </div>
